@@ -42,7 +42,7 @@ public class Book implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "description")
+    @Column(name = "description", length = 2147483647)
     private String description;
     @Basic(optional = false)
     @NotNull

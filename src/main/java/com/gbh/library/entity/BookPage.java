@@ -32,7 +32,7 @@ public class BookPage implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "content")
+    @Column(name = "content", length =2147483647 )
     private String content;
     @Basic(optional = false)
     @NotNull
