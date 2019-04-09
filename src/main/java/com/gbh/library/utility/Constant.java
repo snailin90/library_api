@@ -2,9 +2,9 @@ package com.gbh.library.utility;
 
 /**
  *
- * @author Snailin Inoa
+ * @author sinoa
  *
- * {Constant} class will hold any constant attribute for the application.
+ * 
  */
 public class Constant {
 
@@ -12,4 +12,5 @@ public class Constant {
     public static final String SUCCESS_CODE = "000";
     public static final String ERROR_MSG = "Error";
     public static final String ERROR_CODE = "001";
+    public static final String ERROR_CODE_NOT_FOUND = "002";
 }
