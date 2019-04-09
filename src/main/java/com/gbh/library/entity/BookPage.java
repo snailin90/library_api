@@ -1,18 +1,17 @@
 package com.gbh.library.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -20,47 +19,44 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "book_page")
-@XmlRootElement
+@JsonIgnoreProperties(value ="BookPagePK" )
 public class BookPage implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Long id;
+
+    @EmbeddedId
+    protected BookPagePK bookPagePK;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
-    @Column(name = "content", length =2147483647 )
+    @Column(name = "content", length = 2147483647)
     private String content;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "page_number", unique = true)
-    private int pageNumber;
-    @JoinColumn(name = "id_book", referencedColumnName = "id")
+    @JoinColumn(name = "id_book", referencedColumnName = "id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Book idBook;
+    private Book book;
 
     public BookPage() {
     }
 
-    public BookPage(Long id) {
-        this.id = id;
+    public BookPage(BookPagePK bookPagePK) {
+        this.bookPagePK = bookPagePK;
     }
 
-    public BookPage(Long id, String content, int pageNumber) {
-        this.id = id;
+    public BookPage(BookPagePK bookPagePK, String content) {
+        this.bookPagePK = bookPagePK;
         this.content = content;
-        this.pageNumber = pageNumber;
     }
 
-    public Long getId() {
-        return id;
+    public BookPage(int id, long idBook, int pageNumber) {
+        this.bookPagePK = new BookPagePK(id, idBook, pageNumber);
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public BookPagePK getBookPagePK() {
+        return bookPagePK;
+    }
+
+    public void setBookPagePK(BookPagePK bookPagePK) {
+        this.bookPagePK = bookPagePK;
     }
 
     public String getContent() {
@@ -71,26 +67,18 @@ public class BookPage implements Serializable {
         this.content = content;
     }
 
-    public int getPageNumber() {
-        return pageNumber;
+    public Book getBook() {
+        return book;
     }
 
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
-    }
-
-    public Book getIdBook() {
-        return idBook;
-    }
-
-    public void setIdBook(Book idBook) {
-        this.idBook = idBook;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (bookPagePK != null ? bookPagePK.hashCode() : 0);
         return hash;
     }
 
@@ -101,7 +89,7 @@ public class BookPage implements Serializable {
             return false;
         }
         BookPage other = (BookPage) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.bookPagePK == null && other.bookPagePK != null) || (this.bookPagePK != null && !this.bookPagePK.equals(other.bookPagePK))) {
             return false;
         }
         return true;
@@ -109,7 +97,7 @@ public class BookPage implements Serializable {
 
     @Override
     public String toString() {
-        return "com.devcore.springproject.customer.BookPage[ id=" + id + " ]";
+        return "com.gbh.library.entity.BookPage[ bookPagePK=" + bookPagePK + " ]";
     }
 
 }

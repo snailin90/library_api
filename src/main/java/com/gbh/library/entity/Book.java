@@ -68,7 +68,7 @@ public class Book implements Serializable {
     @Column(name = "issue_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date issueDate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idBook")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
     private Collection<BookPage> bookPageCollection;
 
     public Book() {
@@ -184,7 +184,7 @@ public class Book implements Serializable {
 
     @Override
     public String toString() {
-        return "com.devcore.springproject.customer.Book[ id=" + id + " ]";
+        return "com.gbh.library.entity.Book[ id=" + id + " ]";
     }
 
 }

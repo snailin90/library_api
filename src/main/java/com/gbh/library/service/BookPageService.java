@@ -1,6 +1,7 @@
 package com.gbh.library.service;
 
 import com.gbh.library.entity.BookPage;
+import com.gbh.library.entity.BookPagePK;
 import com.gbh.library.model.GenericModel;
 import com.gbh.library.repository.BookPageRepository;
 import com.gbh.library.utility.Constant;
@@ -27,9 +28,12 @@ public class BookPageService {
         GenericModel<BookPage> genericModel = new GenericModel<>();
         try {
 
-            BookPage bookPage = bookPageRepository.findByIdBookAndPageNumber(idBook, pageNumber);
+            BookPagePK bookPagePK = new BookPagePK();
+            bookPagePK.setIdBook(idBook);
+            bookPagePK.setPageNumber(pageNumber);
+            BookPage bookPage = bookPageRepository.findByBookPagePK(bookPagePK);
 
-            if (bookPage != null && bookPage.getId() > 0) {
+            if (bookPage != null && bookPage.getBookPagePK() != null && bookPage.getBookPagePK().getIdBook() > 0) {
 
                 genericModel.setCode(Constant.SUCCESS_CODE);
                 genericModel.setMessage(Constant.SUCCESS_MSG);
