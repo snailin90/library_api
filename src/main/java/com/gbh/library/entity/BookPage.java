@@ -1,7 +1,5 @@
 package com.gbh.library.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,7 +17,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "book_page")
-@JsonIgnoreProperties(value ="BookPagePK" )
 public class BookPage implements Serializable {
 
     private static final long serialVersionUID = 1L;
