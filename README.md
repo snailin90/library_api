@@ -50,6 +50,17 @@ In order to check if the local server is running , you can hit one of the next e
 **The endpoints related to Book API are :**
 
 * localhost:8080/book          GET Method
+    
+    This service is paginated which means you can also pass some query params to bring the data paginated. 
+
+    Ex :  localhost:8080/book?**page**=0&**size**=3&**sort**=title,desc
+
+        page: which page i want to bring , 0 means page 1
+        size : amount of records that will be coming per page, in the example will be coming 3 per page.
+        sort : which field want to be sorted, in case  you want an order: put a comma and the order that could be : **desc** or **asc**
+
+    **Note:** if you don't pass any query params to the list of books, the endpoint will return all the entries from the Database.
+
 * localhost:8080/book/**2**    GET Method
 
     * The last part of the URL is the **ID of the book**.
