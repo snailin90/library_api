@@ -48,24 +48,25 @@ public class BookController {
     public ResponseEntity getBookPageByIDAndPageNumber(@PathVariable(value = "bookID", required = true) Long bookId,
             @PathVariable(value = "pageNumber", required = true) Integer pageNumber, @PathVariable(value = "format", required = true) String format) {
 
-        HttpHeaders headers = new HttpHeaders();
-        String bodyFormatted = "";
+        String bodyFormatted = null;
         if (!FormatTypeEnum.isValidFormatType(format)) {
             bodyFormatted = "The Format Specified is not available.";
-            headers.setContentType(MediaType.TEXT_PLAIN);
+
         } else {
             bodyFormatted = bookPageService.getBookPageByIdAndPageNumberFormatted(bookId, pageNumber, format);
         }
 
-        return this.loadResponseEntityWithFormat(format, bodyFormatted, headers);
+        return this.loadResponseEntityWithFormat(format, bodyFormatted);
 
     }
 
-    private ResponseEntity loadResponseEntityWithFormat(String format, String body, HttpHeaders headers) {
-
+    private ResponseEntity loadResponseEntityWithFormat(String format, String body) {
+        HttpHeaders headers = new HttpHeaders();
         if (format.equals(Constant.HTML_FORMAT)) {
             headers.setContentType(MediaType.TEXT_HTML);
         } else if (format.equals(Constant.TEXT_FORMAT)) {
+            headers.setContentType(MediaType.TEXT_PLAIN);
+        } else {
             headers.setContentType(MediaType.TEXT_PLAIN);
         }
 
