@@ -2,6 +2,7 @@ package com.gbh.library.service;
 
 import com.gbh.library.entity.BookPage;
 import com.gbh.library.entity.BookPagePK;
+import com.gbh.library.format.FormatProcessor;
 import com.gbh.library.model.GenericModel;
 import com.gbh.library.repository.BookPageRepository;
 import com.gbh.library.utility.Constant;
@@ -51,6 +52,22 @@ public class BookPageService {
         LOGGER.info("getBookPageByIdAndPageNumber() :: END");
         return genericModel;
 
+    }
+
+    public String getBookPageByIdAndPageNumberFormatted(Long idBook, Integer pageNumber, String format) {
+        String result = "That Page is not available, please make sure the page exist.";
+        try {
+            GenericModel genericModel = this.getBookPageByIdAndPageNumber(idBook, pageNumber);
+
+            if (genericModel != null && genericModel.getSingleObject() != null && ((BookPage) genericModel.getSingleObject()).getContent() != null) {
+                result = ((BookPage) genericModel.getSingleObject()).getContent();
+            }
+
+            result = FormatProcessor.getInstance().format(format, result);
+        } catch (Exception ex) {
+            result = "Error Occured trying to Format the Response";
+        }
+        return result;
     }
 
 }

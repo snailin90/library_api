@@ -1,9 +1,10 @@
 package com.gbh.library.controlller;
 
-import com.gbh.library.entity.BookPage;
+import com.gbh.library.format.FormatTypeEnum;
 import com.gbh.library.model.GenericModel;
 import com.gbh.library.service.BookPageService;
 import com.gbh.library.service.BookService;
+import com.gbh.library.utility.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -47,20 +48,29 @@ public class BookController {
     public ResponseEntity getBookPageByIDAndPageNumber(@PathVariable(value = "bookID", required = true) Long bookId,
             @PathVariable(value = "pageNumber", required = true) Integer pageNumber, @PathVariable(value = "format", required = true) String format) {
 
-        GenericModel genericModel = bookPageService.getBookPageByIdAndPageNumber(bookId, pageNumber);
+        String bodyFormatted = null;
+        if (!FormatTypeEnum.isValidFormatType(format)) {
+            bodyFormatted = "The Format Specified is not available.";
+
+        } else {
+            bodyFormatted = bookPageService.getBookPageByIdAndPageNumberFormatted(bookId, pageNumber, format);
+        }
+
+        return this.loadResponseEntityWithFormat(format, bodyFormatted);
+
+    }
+
+    private ResponseEntity loadResponseEntityWithFormat(String format, String body) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_PLAIN);
-        if (format.equals("html")) {
+        if (format.equals(Constant.HTML_FORMAT)) {
             headers.setContentType(MediaType.TEXT_HTML);
-        } else if (format.equals("text")) {
+        } else if (format.equals(Constant.TEXT_FORMAT)) {
+            headers.setContentType(MediaType.TEXT_PLAIN);
+        } else {
             headers.setContentType(MediaType.TEXT_PLAIN);
         }
-        String body = "That Page is not available, please make sure the page exist.";
-        if (genericModel != null && genericModel.getSingleObject() != null && ((BookPage) genericModel.getSingleObject()).getContent() != null) {
-            body = ((BookPage) genericModel.getSingleObject()).getContent();
-        }
+
         ResponseEntity responseEntity = new ResponseEntity(body, headers, HttpStatus.OK);
         return responseEntity;
-
     }
 }
